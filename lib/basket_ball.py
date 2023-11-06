@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 def game_dict():
     return {
         "home": {
@@ -182,3 +184,139 @@ def game_dict():
             ]
         }
     }
+
+def num_points_per_game(player_name):
+    basketball_data = game_dict()
+    
+    # Combine the players from both the home and away teams
+    players = basketball_data["home"]["players"] + basketball_data["away"]["players"]
+    
+    # Find the player and return the points per game
+    for player in players:
+        if player["name"] == player_name:
+            return player["points_per_game"]
+    
+    # If the player is not found, return a message stating so
+    return "Player not found."
+
+# Example usage:
+player_name = "Kevin Love"
+print(f"{player_name} scores {num_points_per_game(player_name)} points per game.")
+
+
+def player_age(player_name):
+    basketball_data = game_dict()
+    
+    # Combine the players from both the home and away teams
+    players = basketball_data["home"]["players"] + basketball_data["away"]["players"]
+    
+    # Find the player and return their age
+    for player in players:
+        if player["name"] == player_name:
+            return player["age"]
+    
+    # If the player is not found, return a message stating so
+    return "Player not found."
+
+# Example usage:
+player_name = "Kevin Love"
+print(f"{player_name} is {player_age(player_name)} years old.")
+
+
+def team_colors(team_name):
+    basketball_data = game_dict()
+
+    if basketball_data["home"]["team_name"] == team_name:
+        return basketball_data["home"]["colors"]
+    elif basketball_data ["away"]["team_name"] == team_name:
+        return basketball_data["away"]["colors"]
+    
+    return "Team not found."
+
+#Example
+team_name = "Cleveland Cavaliers"
+print(f"The colors of the {team_name} are {team_colors(team_name)}.")
+
+team_name = "Chicago Bulls"
+print(f"The colors of the {team_name} are {team_colors(team_name)}.")
+
+def team_names():
+    basketball_data = game_dict()
+
+    # Get the team names from the 'home' and 'away' keys
+    names = [basketball_data["home"]["team_name"], basketball_data["away"]["team_name"]]
+    
+    return names
+
+# Example usage:
+print(f"The teams playing are: {team_names()}")
+
+
+def player_numbers(team_name):
+    basketball_data = game_dict()
+    jersey_numbers = []
+
+    # Check the home team and collect jersey numbers if the team name matches
+    if basketball_data["home"]["team_name"] == team_name:
+        for player in basketball_data["home"]["players"]:
+            jersey_numbers.append(player["number"])
+
+    # Check the away team and collect jersey numbers if the team name matches
+    elif basketball_data["away"]["team_name"] == team_name:
+        for player in basketball_data["away"]["players"]:
+            jersey_numbers.append(player["number"])
+
+    # If the team is not found, return a message stating so
+    else:
+        return "Team not found."
+
+    return jersey_numbers
+
+# Example usage:
+team_name = "Cleveland Cavaliers"
+print(f"Jersey numbers for the {team_name}: {player_numbers(team_name)}")
+
+team_name = "Washington Wizards"
+print(f"Jersey numbers for the {team_name}: {player_numbers(team_name)}")
+
+
+def player_stats(player_name):
+    basketball_data = game_dict()
+    
+    # Combine the players from both the home and away teams
+    players = basketball_data["home"]["players"] + basketball_data["away"]["players"]
+    
+    # Find the player and return their stats as a dictionary
+    for player in players:
+        if player["name"] == player_name:
+            # Return a copy of the player's dictionary to avoid mutating the original data
+            return player.copy()
+    
+    # If the player is not found, return a message stating so
+    return "Player not found."
+
+# Example usage:
+player_name = "Kevin Love"
+print(f"Stats for {player_name}: {player_stats(player_name)}")
+
+
+def average_rebounds_by_shoe_brand():
+    game_data = game_dict()
+    shoe_brand_rebounds = defaultdict(list)
+
+    for team, players in game_data.items():
+        for player in players['players']:
+            shoe_brand = player['shoe_brand']
+            rebounds_per_game = player['rebounds_per_game']
+            shoe_brand_rebounds[shoe_brand].append(rebounds_per_game)
+
+    output = ""
+    for brand, rebounds_list in shoe_brand_rebounds.items():
+        average_rebounds = sum(rebounds_list) / len(rebounds_list)
+        output += f"{brand}: {average_rebounds: .2f}\n" 
+
+    print(output, end="")
+
+# Run the function for calculating average rebounds by shoe brand
+if __name__ == "__main__":
+    average_rebounds_by_shoe_brand()
